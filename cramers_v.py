@@ -17,3 +17,9 @@ def cramers_v(x,y):
     r_corr = r - (((r-1)**2)/(n-1))
     c_corr = c - (((c-1)**2)/(n-1))
     return np.sqrt(unbiased_phi2_coff / min((c_corr-1), (r_corr-1)))
+
+categorical_columns = list(df.select_dtypes('category').columns)
+categorical_correlation_df = pd.DataFrame(index = categorical_columns, columns = categorical_columns)
+for i in categorical_columns:
+    for j in categorical_columns:
+        categorical_correlation_df.loc[i, j] = cramers_v(i,j)
