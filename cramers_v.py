@@ -3,8 +3,7 @@ import numpy as np
 import pandas as pd
 import scipy.stats as ss
 
-def cramers_v(x,y):
-    contingency_table = pd.crosstab(df[x], df[y])
+def cramers_v(contingency_table):
     if contingency_table.shape[0]==2:
         correct=False
     else:
@@ -22,4 +21,6 @@ categorical_columns = list(df.select_dtypes('category').columns)
 categorical_correlation_df = pd.DataFrame(index = categorical_columns, columns = categorical_columns)
 for i in categorical_columns:
     for j in categorical_columns:
-        categorical_correlation_df.loc[i, j] = cramers_v(i,j)
+        contingency_table = pd.crosstab(df[i], df[j])
+        if contingency_table.size != 0:                 #to avoid this statement deal with the missing values first
+            categorical_correlation_df.loc[i, j] = cramers_v(i,j)
